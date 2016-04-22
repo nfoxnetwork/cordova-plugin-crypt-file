@@ -83,11 +83,13 @@ module.exports = function(context) {
         var platformInfo = platformApi.getPlatformInfo();
         var wwwDir = platformInfo.locations.www;
 
-        findCryptoFiles(context, wwwDir).forEach(function(file) {
-            var content = fs.readFileSync(file, 'utf-8');
-            fs.writeFileSync(file, encryptData(content, key, iv), 'utf-8');
-            console.log("encrypt: " + file);
-        });
+        if (platform != 'browser') {
+          findCryptoFiles(context, wwwDir).forEach(function(file) {
+              var content = fs.readFileSync(file, 'utf-8');
+              fs.writeFileSync(file, encryptData(content, key, iv), 'utf-8');
+              console.log("encrypt: " + file);
+          });
+        }
 
         if (platform == 'ios') {
             var ios_parser = context.requireCordovaModule('cordova-lib/src/cordova/metadata/ios_parser');
